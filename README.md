@@ -32,9 +32,14 @@ Complete format:
 ```
 #+?1,1.0000?#
 ```
+- `#` It Indicate if the numbers can have prefixes. See [prefixes and suffixes](#prefixes-and-suffixes) section for more info.
+- `+?` It Indicate if the numbers can have `+` or `-` symbols. The character `?` indicate if that symbols are optionals in the `stringify` function.
+- `1,1` integer part. the character `,` is the thousands separator. you can use any character here. Also you can use only the character `1` If you don't want thousands separator.
+- `.0000?` Decimal part. The character `.` is the decimal separator, and the number of zeros is the number of decimals will have the decimal part. The character `?` indicate that the decimal numbers will optional in the `stringify` function.
+- `#` Indicate if the number can have suffixes. See [prefixes and suffixes](#prefixes-and-suffixes) section for more info.
 
-#### Format examples:
-`1`
+#### Format examples
+##### `1`
 
 Only integer numbers
 
@@ -44,7 +49,7 @@ Only integer numbers
 | `'33.32' => false` | `123.3 => false` |
 
 
-`1,0`
+##### `1,0`
 
 Parse decimals, using the `,` as decimal character, and one round in one decimal.
 
@@ -54,9 +59,10 @@ Parse decimals, using the `,` as decimal character, and one round in one decimal
 | `'33,39' => 33.4` | `123.38 => '123,4'` |
 | `'33.39' => false` ( the decimal characters isn't `,` ) | `0.73 => '0,7'` |
 
-`1_000`
+##### `1_000`
 
 Now the decimal characters is `_` and the number of decimal is 3. 
+
 | parse | stringify |
 | ----- | --------- |
 | `'33' => 33` | `123 => '123_000'` |
@@ -64,7 +70,7 @@ Now the decimal characters is `_` and the number of decimal is 3.
 | `'33_3248' => 33.325` | `8.34328 => '8_343'` |
 
 
-`1,000?`
+##### `1,000?`
 
 Decimal character is `,`. 3 decimals, and the character `?` indicate the 3 decimals are optionals in the `stringify` function.
 
@@ -75,7 +81,7 @@ Decimal character is `,`. 3 decimals, and the character `?` indicate the 3 decim
 | `'33,3248' => 33.325` | `8.34328 => '8,343'` |
 
 
-`1.1,00`
+##### `1.1,00`
 The integer part has as thousands separator the character `.` .
 And the decimal separator is `,`.
 
@@ -86,10 +92,11 @@ And the decimal separator is `,`.
 | `'33.324.883,23' => 33324883.23` | `834328.323 => '834.328,32'` |
 |`'333.32,33'` => false (incorrect format number) ||
 
-`+1_1'00`
+##### `+1_1'00`
 
 Now you can add the `+` and the `-` sign in the numbers, and the numbers string always have that symbols. The thousands separator is `_`
 and the decimal separator is `'`
+
 | parse | stringify |
 | ----- | --------- |
 | `'88' => 88` | `328 => '+328,3'` |
@@ -97,15 +104,16 @@ and the decimal separator is `'`
 | `"33_324_883'23" => 33324883.23` | `834328.323 => "+834_328'32"` |
 |`"333_32'33"` => false (incorrect format number) ||
 
-`+?1 00`
+##### `+?1 00`
 
 Parse numbers with sign and the `+` and `-` symbols are optional in the `stringify` function. And the decimal separator is `<space>`
+
 | parse | stringify |
 | ----- | --------- |
 | '99 32' => 99.32 | 132.489 => '132 49'|
 | '-99 32' => -99.32 | -132.489 => '-132 49'|
 
-`,000`
+##### `,000`
 
 Only decimals. The decimal separator is `,`
 
@@ -115,6 +123,7 @@ Only decimals. The decimal separator is `,`
 | ',323' => 0.323 | 0.442 => ',442' |
 | '3,323' => false (number has integer part) | 0.8 => ',800'
 
+
 > This only are some examples of formats. You can combine the before formats for makes others.
 
 
@@ -122,7 +131,7 @@ Only decimals. The decimal separator is `,`
 
 `MyNumbers(string|array format[, object prefixes[, object suffixes ] ])`
 - See the [formats](#formats) section for more info about `format` parameter.
-- See the [prefixes and suffixes](#prefixes-and-suffixes) section for more info about `prefixes` and suffixes` parameters 
+- See the [prefixes and suffixes](#prefixes-and-suffixes) section for more info about `prefixes` and `suffixes` parameters 
 
 ### Parse function
 
@@ -156,6 +165,7 @@ mn.parse('3.32') // { '1.1,000': false, '1,1.000': 3.320}
 Transform a number in a string number depending of the format. If the number isn't compatible with the format the return false.
 
 `MyNumbers(...).stringify(float|int number[, string prefix[, string suffix]])`
+- See the [prefixes and suffixes](#prefixes-and-suffixes) section for more info about `prefix` and `suffix` parameters. 
 
 ```js
 // example
@@ -166,7 +176,7 @@ mn.parse(888323.3) // '888_323 300'
 mn.parse(-1) // false. The format not admit negative number.
 ```
 
-### multiformat
+### MultiStringify 
 You can add two or more format. Stringify function returns an object with the formats and his results.
 
 ```js
