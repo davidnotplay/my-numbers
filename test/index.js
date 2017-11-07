@@ -210,10 +210,10 @@ describe('Test format object', () => {
       } catch(err) {
         expect(err.message).toBe('The format \'invalid\' is invalid.')
       }
-    }) 
+    })
 
     it('1.1.1', () => {
-      let r = null 
+      let r = null
       try {
         MyNumbers('1.1.1')
         r = false
@@ -221,10 +221,10 @@ describe('Test format object', () => {
         r = true
       }
       expect(r).toBe(true)
-    }) 
+    })
 
     it('1.11,0', () => {
-      let r = null 
+      let r = null
       try {
         MyNumbers('1.11,0')
         r = false
@@ -232,10 +232,10 @@ describe('Test format object', () => {
         r = true
       }
       expect(r).toBe(true)
-    }) 
+    })
 
     it('-1.1,0', () => {
-      let r = null 
+      let r = null
       try {
         MyNumbers('-1.1,0')
         r = false
@@ -243,10 +243,10 @@ describe('Test format object', () => {
         r = true
       }
       expect(r).toBe(true)
-    }) 
+    })
 
     it('?1.1,0', () => {
-      let r = null 
+      let r = null
       try {
         MyNumbers('?1.1,0')
         r = false
@@ -254,10 +254,10 @@ describe('Test format object', () => {
         r = true
       }
       expect(r).toBe(true)
-    }) 
+    })
 
     it('##', () => {
-      let r = null 
+      let r = null
       try {
         MyNumbers('##')
         r = false
@@ -265,10 +265,10 @@ describe('Test format object', () => {
         r = true
       }
       expect(r).toBe(true)
-    }) 
+    })
 
     it('#', () => {
-      let r = null 
+      let r = null
       try {
         MyNumbers('#')
         r = false
@@ -276,10 +276,10 @@ describe('Test format object', () => {
         r = true
       }
       expect(r).toBe(true)
-    }) 
+    })
 
     it('#+#', () => {
-      let r = null 
+      let r = null
       try {
         MyNumbers('#+#')
         r = false
@@ -287,10 +287,10 @@ describe('Test format object', () => {
         r = true
       }
       expect(r).toBe(true)
-    }) 
+    })
 
     it('+', () => {
-      let r = null 
+      let r = null
       try {
         MyNumbers('+')
         r = false
@@ -298,10 +298,10 @@ describe('Test format object', () => {
         r = true
       }
       expect(r).toBe(true)
-    }) 
+    })
 
     it('+?', () => {
-      let r = null 
+      let r = null
       try {
         MyNumbers('+?')
         r = false
@@ -309,10 +309,10 @@ describe('Test format object', () => {
         r = true
       }
       expect(r).toBe(true)
-    }) 
+    })
 
     it('#+?', () => {
-      let r = null 
+      let r = null
       try {
         MyNumbers('#+?')
         r = false
@@ -320,7 +320,7 @@ describe('Test format object', () => {
         r = true
       }
       expect(r).toBe(true)
-    }) 
+    })
   })
 })
 
@@ -571,16 +571,16 @@ describe('stringify function', () => {
 
     it('1,1.000?', () => {
       const nm = MyNumbers('1,1.000?')
-      expect(nm.stringify(333)).toBe('333') 
-      expect(nm.stringify(32.3)).toBe('32.3') 
-      expect(nm.stringify(32.3329)).toBe('32.333') 
+      expect(nm.stringify(333)).toBe('333')
+      expect(nm.stringify(32.3)).toBe('32.3')
+      expect(nm.stringify(32.3329)).toBe('32.333')
     })
 
     it('.000', () => {
       const nm = MyNumbers('.000')
-      expect(nm.stringify(333)).toBe(false) 
-      expect(nm.stringify(32.3)).toBe(false) 
-      expect(nm.stringify(32.3329)).toBe(false) 
+      expect(nm.stringify(333)).toBe(false)
+      expect(nm.stringify(32.3)).toBe(false)
+      expect(nm.stringify(32.3329)).toBe(false)
       expect(nm.stringify(0.332)).toBe('.332')
       expect(nm.stringify(0.332)).toBe('.332')
       expect(nm.stringify(0.8898)).toBe('.890')
@@ -623,7 +623,7 @@ describe('stringify function', () => {
 
   describe('Multi', () => {
     it('1.1,00 +1,1.00?', () => {
-      const mn = MyNumbers(['1.1,00', '+1,1.00?']) 
+      const mn = MyNumbers(['1.1,00', '+1,1.00?'])
       const r = mn.stringify(3323.2)
       expect(r).toEqual({ '1.1,00': '3.323,20', '+1,1.00?': '+3,323.2' })
       const r1 = mn.stringify(-3323.2)
@@ -661,5 +661,32 @@ describe('Modifiers', () => {
 
     expect(r.parse('3.su')).toBe(3)
     expect(r.stringify(3, 'pr.')).toBe('pr.6,00')
+  })
+})
+
+describe('Bug found in 0.0.1 version', () => {
+  /**
+   * The shown when
+   */
+
+  it('Bug', () => {
+    const formats = [
+      '1.00', '1.00?', '+1.00', '+?1.00', '+?1.00?',
+      '1,00', '1,00?', '+1,00', '+?1,00', '+?1,00?'
+    ]
+    const mn = MyNumbers(formats)
+    const r = mn.stringify(1234)
+    expect(r).toEqual({
+      '1.00': '1234.00',
+      '1.00?': '1234',
+      '+1.00': '+1234.00',
+      '+?1.00': '1234.00',
+      '+?1.00?': '1234',
+      '1,00': '1234,00',
+      '1,00?': '1234',
+      '+1,00': '+1234,00',
+      '+?1,00': '1234,00',
+      '+?1,00?': '1234'
+    })
   })
 })

@@ -1,6 +1,6 @@
 {
   "name": "my-numbers",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Javascript library for formatting numbers. Using your own formats.",
   "main": "dist/my-numbers.js",
   "scripts": {
@@ -10,7 +10,10 @@
     "build": "webpack --progress --profile --color --config ./build/webpack-prod.config.js"
   },
   "keywords": [
-    "number", "format", "money", "percentage"
+    "number",
+    "format",
+    "money",
+    "percentage"
   ],
   "author": {
     "name": "David Casado Martínez",
@@ -25,7 +28,6 @@
   "bugs": {
     "url": "https://github.com/davidnotplay/my-numbers/issues"
   },
-
   "devDependencies": {
     "babel": "^6.23.0",
     "babel-core": "^6.25.0",

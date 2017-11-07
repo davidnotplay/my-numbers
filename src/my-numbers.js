@@ -1,15 +1,16 @@
 /**
  * @preserve
  * My numbers
- * @Author David Casado Martínez @davidnotplay
+ * @author David Casado Martínez @davidnotplay
  * @license MIT
+ * @see https://github.com/davidnotplay/my-numbers
  */
 
 /**
  * Regular expression for get the format parts.
  */
 const formatRegex = new RegExp(
-  /^(#)?(\+\??)?((?:1([^\d]))?1)?(?:([^\d])(0+\??))?(#)?$/ 
+  /^(#)?(\+\??)?((?:1([^\d]))?1)?(?:([^\d])(0+\??))?(#)?$/
 )
 
 // this are invalid formats but the `formatRegex` regular expression accept as valids.
@@ -31,7 +32,7 @@ const invalidFormats = [
  * @return {float} Number rounded.
  */
 const round = (num, decimalNumbers) => {
-  return Math.round(num * Math.pow(10, decimalNumbers)) / Math.pow(10, decimalNumbers) 
+  return Math.round(num * Math.pow(10, decimalNumbers)) / Math.pow(10, decimalNumbers)
 }
 
 /**
@@ -100,7 +101,7 @@ const parseModifiers = (num, modifier, inv) => {
 /**
  * Make the regulars expressions using the `formatObj` data.
  * @param {objec} formatObj Object with the format data
- * @return {object} 
+ * @return {object}
  *    - {RegExp} _regex: Regular expression necessary for parse the number.
  *    - {function} _replaceThousands: Function for replace the thousands number.
  */
@@ -222,7 +223,7 @@ const stringify = (num, format, prefix = null, suffix = null) => {
   // transform integer part
   if (format.integer) {
     strNum = int.split('').reverse().join('').match(/[0-9]{1,3}/g)
-      .join(format.thousands).split('').reverse().join('')
+      .join(format.thousands || '').split('').reverse().join('')
   }
 
   // decimal part
@@ -232,7 +233,7 @@ const stringify = (num, format, prefix = null, suffix = null) => {
       const zeros = dln < format.decimalNumbers
         ? '0'.repeat(format.decimalNumbers - dln)
         : ''
-      
+
       strNum = `${strNum}${format.decimal}${dec || ''}${zeros}`
     } else if (parseInt(dec || '0') !== 0) {
       strNum = `${strNum}${format.decimal}${dec}`
@@ -250,7 +251,7 @@ const stringify = (num, format, prefix = null, suffix = null) => {
   if (suffix && format.suffix) {
     strNum = strNum + suffix
   }
-  
+
   return strNum
 }
 
@@ -282,7 +283,7 @@ const MyNumbers = (formats, prefixes = {}, suffixes = {}) => {
   })
 
   myNumber.parse = (number) => {
-    const r = {} 
+    const r = {}
 
     Object.keys(myNumber._fdata).forEach(formatStr => {
       r[formatStr] = parseNumber(number, myNumber._fdata[formatStr])
@@ -301,7 +302,7 @@ const MyNumbers = (formats, prefixes = {}, suffixes = {}) => {
 
   }
 
-  return myNumber 
+  return myNumber
 }
 
 export default MyNumbers
