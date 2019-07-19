@@ -32,7 +32,7 @@ const invalidFormats = [
  * @return {float} Number rounded.
  */
 const round = (num, decimalNumbers) => {
-  return Math.round(num * Math.pow(10, decimalNumbers)) / Math.pow(10, decimalNumbers)
+  return +(Math.round(num + `e+${decimalNumbers}`)  + `e-${decimalNumbers}`)
 }
 
 /**
