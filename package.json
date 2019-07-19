@@ -1,6 +1,6 @@
 {
   "name": "my-numbers",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Javascript library for formatting numbers. Using your own formats.",
   "main": "dist/my-numbers.js",
   "scripts": {
