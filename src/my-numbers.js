@@ -25,6 +25,33 @@ const invalidFormats = [
   '+?#'
 ]
 
+const scientificToDecimal = num => {
+  // if the number is in scientific notation remove it
+  if (/\d+\.?\d*e[+-]*\d+/i.test(num.toString())) {
+    const zero = '0'
+    const parts = String(num).toLowerCase().split('e') // split into coeff and exponent
+    const exponencial = parts.pop() // store the exponential part
+    let expZeros = Math.abs(exponencial) // get the number of zeros
+    const sign = exponencial / expZeros
+    const coeffArray = parts[0].split('.')
+
+    if (sign === -1) {
+      coeffArray[0] = Math.abs(coeffArray[0])
+      num = `-${ zero }.${ new Array(expZeros).join(zero) + coeffArray.join('') }`
+    } else {
+      const decrease = coeffArray[1]
+
+      if (decrease) {
+        expZeros = expZeros - decrease.length
+      }
+
+      num = coeffArray.join('') + new Array(expZeros + 1).join(zero)
+    }
+  }
+
+  return num
+}
+
 /**
  * Round the `num` number.
  * @param {float} num number to round
@@ -32,7 +59,7 @@ const invalidFormats = [
  * @return {float} Number rounded.
  */
 const round = (num, decimalNumbers) => {
-  return +(Math.round(num + `e+${decimalNumbers}`)  + `e-${decimalNumbers}`)
+  return +(scientificToDecimal(Math.round(num + `e+${decimalNumbers}`)) + `e-${decimalNumbers}`)
 }
 
 /**
