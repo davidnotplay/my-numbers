@@ -144,7 +144,7 @@ const makeFormatRegex = (formatObj)  => {
     if (!formatObj.thousands) {
       regex = `${regex}([0-9]+)`
     } else {
-      regex = `${regex}([1-9][0-9]{0,2}(?:\\${formatObj.thousands}[0-9]{3,3})*)`
+      regex = `${regex}((?:[1-9][0-9]{0,2}(?:\\${formatObj.thousands}[0-9]{3,3})*)|0+)`
     }
   } else {
     regex = regex + '()'

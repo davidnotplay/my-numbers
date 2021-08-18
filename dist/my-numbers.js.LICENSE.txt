@@ -1,0 +1,7 @@
+/**
+ * @preserve
+ * My numbers
+ * @author David Casado Martínez @davidnotplay
+ * @license MIT
+ * @see https://github.com/davidnotplay/my-numbers
+ */

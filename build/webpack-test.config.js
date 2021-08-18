@@ -1,3 +1,20 @@
-const config = require('./webpack-base.config')('test')
-config.module.rules[0].use.options.plugins.push('istanbul')
-module.exports = config
+module.exports = function() {
+  return { 
+    mode: 'development',
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env'],
+            }
+          }
+        }
+      ]
+    },
+    devtool: 'eval-source-map'
+  }
+}
