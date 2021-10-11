@@ -721,3 +721,51 @@ describe('Bug. Bad round', () => {
     })  
   })
 })
+
+
+describe('Bug: When it parses the "0" string in some formats.', () => {
+  it('Parse "0" string', () =>{
+    const mn = MyNumbers([
+      '1',
+      '1,0?',
+      '1.1',
+      '1.1,0?',
+      '1.1,0',
+      '1.1,00',
+      ',0'
+    ])
+
+    expect(mn.parse('0')).toEqual({
+      '1':      0,
+      '1,0?':   0,
+      '1.1':    0,
+      '1.1,0?': 0,
+      '1.1,0':  0,
+      '1.1,00': 0,
+      ',0':     false,
+    })
+  })
+
+  it('Stringify 0', () =>{
+    const mn = MyNumbers([
+      '1',
+      '1,0?',
+      '1.1',
+      '1.1,0?',
+      '1.1,0',
+      '1.1,00',
+      ',0'
+    ])
+
+    expect(mn.stringify(0)).toEqual({
+      '1':      '0',
+      '1,0?':   '0',
+      '1.1':    '0',
+      '1.1,0?': '0',
+      '1.1,0':  '0,0',
+      '1.1,00': '0,00',
+      ',0':     ',0'
+    })
+  })
+})
+
