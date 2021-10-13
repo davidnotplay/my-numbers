@@ -1,12 +1,13 @@
 {
   "name": "my-numbers",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Javascript library for formatting numbers. Using your own formats.",
   "main": "dist/my-numbers.js",
   "scripts": {
-    "test:watch": "instant-mocha -w --webpack-config ./build/webpack-test.config.js \"test/*.js\"",
-    "test": "instant-mocha --webpack-config ./build/webpack-test.config.js \"test/*.js\"",
-    "build": "webpack-cli --progress --profile --color --config ./build/webpack-prod.config.js"
+    "test:watch": "mocha-webpack -w --webpack-config ./build/webpack-test.config.js \"test/*.js\"",
+    "test": "nyc mocha-webpack --webpack-config ./build/webpack-test.config.js \"test/*.js\"",
+    "dev": "webpack  --progress --profile --color --watch --config ./build/webpack-dev.config.js",
+    "build": "webpack --progress --profile --color --config ./build/webpack-prod.config.js"
   },
   "keywords": [
     "number",
@@ -15,7 +16,8 @@
     "percentage"
   ],
   "author": {
-    "name": "David Casado Martínez"
+    "name": "David Casado Martínez",
+    "url": "http://buhoprogramador.com"
   },
   "license": "MIT",
   "repository": {
@@ -27,12 +29,13 @@
     "url": "https://github.com/davidnotplay/my-numbers/issues"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.0",
-    "@babel/preset-env": "^7.15.0",
+    "babel": "^6.23.0",
+    "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
-    "babel-loader": "^8.2.2",
-    "babel-plugin-istanbul": "^6.0.0",
+    "babel-loader": "^7.1.1",
+    "babel-plugin-istanbul": "^4.1.4",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-latest": "^6.24.1",
     "eslint": "^4.3.0",
     "eslint-config-google": "^0.9.1",
     "eslint-config-standard": "^10.2.1",
@@ -41,10 +44,20 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "expect": "^1.20.2",
-    "instant-mocha": "^1.3.0",
-    "mocha": "^9.0.3",
-    "nyc": "^15.1.0",
-    "webpack": "^5.50.0",
-    "webpack-cli": "^4.8.0"
+    "mocha": "^3.5.0",
+    "mocha-webpack": "^0.7.0",
+    "nyc": "^11.1.0",
+    "webpack": "^3.4.1"
+  },
+  "nyc": {
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "exclude": [
+      "build",
+      ".tmp",
+      "test"
+    ]
   }
 }
