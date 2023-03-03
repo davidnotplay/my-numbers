@@ -44,9 +44,9 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "expect": "^1.20.2",
-    "mocha": "^3.5.0",
+    "mocha": "^10.2.0",
     "mocha-webpack": "^0.7.0",
-    "nyc": "^11.1.0",
+    "nyc": "^15.1.0",
     "webpack": "^3.4.1"
   },
   "nyc": {
