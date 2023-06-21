@@ -769,3 +769,185 @@ describe('Bug: When it parses the "0" string in some formats.', () => {
   })
 })
 
+
+describe('Bug: Numbers with a lot of decimals', () => {
+  describe('Parse', () => {
+    const numbers = [
+      {
+        format: '+?1,00000000000000?',
+        numberString: '0,00000014120944',
+        expectedNumber: 0.00000014120944,
+      },
+      {
+        format: '+?1.00000000000000?',
+        numberString: '0.00000014120944',
+        expectedNumber: 0.00000014120944,
+      },
+      {
+        format: '+?1,1.00000000000000?',
+        numberString: '0.00000014120944',
+        expectedNumber: 0.00000014120944,
+      },
+      {
+        format: '+?1.1,00000000000000?',
+        numberString: '0,00000014120944',
+        expectedNumber: 0.00000014120944,
+      },
+      {
+        format: '+?1,1.00?',
+        numberString: '0.00000014120944',
+        expectedNumber: 0,
+      },
+      {
+        format: '+?1.1,00?',
+        numberString: '0,00000014120944',
+        expectedNumber: 0,
+      },
+
+
+      {
+        format: '+?1,00000000000000?',
+        numberString: '1234567,00000014120944',
+        expectedNumber: 1234567.00000014120944,
+      },
+      {
+        format: '+?1.00000000000000?',
+        numberString: '1234567.00000014120944',
+        expectedNumber: 1234567.00000014120944,
+      },
+      {
+        format: '+?1,1.00000000000000?',
+        numberString: '1,234,567.00000014120944',
+        expectedNumber: 1234567.00000014120944,
+      },
+      {
+        format: '+?1.1,00000000000000?',
+        numberString: '1.234.567,00000014120944',
+        expectedNumber: 1234567.00000014120944,
+      },
+      {
+        format: '+?1,1.00?',
+        numberString: '1,234,567.00000014120944',
+        expectedNumber: 1234567,
+      },
+      {
+        format: '+?1.1,00?',
+        numberString: '1.234.567,00000014120944',
+        expectedNumber: 1234567,
+      },
+
+
+
+
+      {
+        format: '+?1,00000000000000?',
+        numberString: '1234567,10000014120944',
+        expectedNumber: 1234567.10000014120944,
+      },
+      {
+        format: '+?1.00000000000000?',
+        numberString: '1234567.10000014120944',
+        expectedNumber: 1234567.10000014120944,
+      },
+      {
+        format: '+?1,1.00000000000000?',
+        numberString: '1,234,567.10000014120944',
+        expectedNumber: 1234567.10000014120944,
+      },
+      {
+        format: '+?1.1,00000000000000?',
+        numberString: '1.234.567,10000014120944',
+        expectedNumber: 1234567.10000014120944,
+      },
+      {
+        format: '+?1,1.00?',
+        numberString: '1,234,567.10000014120944',
+        expectedNumber: 1234567.1,
+      },
+      {
+        format: '+?1.1,00?',
+        numberString: '1.234.567,10000014120944',
+        expectedNumber: 1234567.1,
+      },
+    ]
+
+    numbers.forEach(({format, numberString, expectedNumber}) => {
+      it(`Format ${format}, number: ${numberString}`, () => {
+        expect(MyNumbers([format]).parse(numberString)[format]).toBe(expectedNumber)
+      })
+    })
+  })
+
+  describe('Stringify', () => {
+    const numbers = [
+      {
+        format: '+?1,00000000000000?',
+        number: 0.00000014120944,
+        expectedString: '0,00000014120944',
+      },
+      {
+        format: '+?1.00000000000000?',
+        number: 0.00000014120944,
+        expectedString: '0.00000014120944',
+      },
+      {
+        format: '+?1,1.00000000000000?',
+        number: 0.00000014120944,
+        expectedString: '0.00000014120944',
+      },
+      {
+        format: '+?1.1,00000000000000?',
+        number: 0.00000014120944,
+        expectedString: '0,00000014120944',
+      },
+      {
+        format: '+?1,1.00',
+        number: 0,
+        expectedString: '0.00',
+      },
+      {
+        format: '+?1.1,00',
+        number: 0,
+        expectedString: '0,00',
+      },
+
+
+      {
+        format: '+?1,00000000000000?',
+        number: 1234567.001412022,
+        expectedString: '1234567,001412022',
+      },
+      {
+        format: '+?1.00000000000000?',
+        number: 1234567.001412022,
+        expectedString: '1234567.001412022',
+      },
+      {
+        format: '+?1,1.00000000000000?',
+        number: 1234567.001412022,
+        expectedString: '1,234,567.001412022',
+      },
+      {
+        format: '+?1.1,00000000000000?',
+        number: 1234567.001412022,
+        expectedString: '1.234.567,001412022',
+      },
+      {
+        format: '+?1,1.00?',
+        number: 1234567.009412022,
+        expectedString: '1,234,567.01',
+      },
+      {
+        format: '+?1.1,00',
+        number: 1234567.001412022,
+        expectedString: '1.234.567,00',
+      },
+    ]
+
+    numbers.forEach(({format, number, expectedString}, i) => {
+      it(`${i} - Format ${format}, number: ${number}`, () => {
+        expect(MyNumbers([format]).stringify(number)[format]).toBe(expectedString)
+      })
+    })
+  })
+})
