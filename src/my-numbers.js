@@ -25,31 +25,44 @@ const invalidFormats = [
   '+?#'
 ]
 
-const scientificToDecimal = num => {
-  // if the number is in scientific notation remove it
-  if (/\d+\.?\d*e[+-]*\d+/i.test(num.toString())) {
-    const zero = '0'
-    const parts = String(num).toLowerCase().split('e') // split into coeff and exponent
-    const exponencial = parts.pop() // store the exponential part
-    let expZeros = Math.abs(exponencial) // get the number of zeros
-    const sign = exponencial / expZeros
-    const coeffArray = parts[0].split('.')
+/**
+ * Get the `num` number, written in scientific notfication, transformed in plain numeric string. 
+ */
+var scientificToDecimal = function (num) {
+  var nsign = Math.sign(num)
+  //remove the sign
+  num = Math.abs(num)
+  //if the number is in scientific notation remove it
+  if (/\d+\.?\d*e[+-]*\d+/i.test(num)) {
+    let zero = '0'
+    let parts = String(num).toLowerCase().split('e')
+    let e = parts.pop()
+    let l = Math.abs(e)
+    let sign = e / l
+    let coeff_array = parts[0].split('.')
 
     if (sign === -1) {
-      coeffArray[0] = Math.abs(coeffArray[0])
-      num = `-${ zero }.${ new Array(expZeros).join(zero) + coeffArray.join('') }`
-    } else {
-      const decrease = coeffArray[1]
-
-      if (decrease) {
-        expZeros = expZeros - decrease.length
+      l = l - coeff_array[0].length
+      if (l < 0) {
+        num = coeff_array[0].slice(0, l) + '.' + coeff_array[0].slice(l) + (coeff_array.length === 2 ? coeff_array[1] : '')
+      } 
+      else {
+        num = zero + '.' + new Array(l + 1).join(zero) + coeff_array.join('')
       }
-
-      num = coeffArray.join('') + new Array(expZeros + 1).join(zero)
+    } 
+    else {
+      var dec = coeff_array[1]
+      if (dec) {
+        l = l - dec.length
+      }
+      if (l < 0) {
+        num = coeff_array[0] + dec.slice(0, l) + '.' + dec.slice(l)
+      } else {
+        num = coeff_array.join('') + new Array(l + 1).join(zero)
+      }
     }
   }
-
-  return num
+  return nsign < 0 ? '-'+num : num
 }
 
 /**
@@ -59,6 +72,7 @@ const scientificToDecimal = num => {
  * @return {float} Number rounded.
  */
 const round = (num, decimalNumbers) => {
+  num = scientificToDecimal(num)
   return +(scientificToDecimal(Math.round(num + `e+${decimalNumbers}`)) + `e-${decimalNumbers}`)
 }
 
@@ -235,6 +249,7 @@ const stringify = (num, format, prefix = null, suffix = null) => {
   }
 
   num = round(num, format.decimalNumbers)
+  num = scientificToDecimal(num)
   const [int, dec] = `${num}`.split(/\./)
   let strNum = ''
 
@@ -305,7 +320,7 @@ const MyNumbers = (formats, prefixes = {}, suffixes = {}) => {
 
     format._prefixes = prefixes || {}
     format._suffixes = suffixes || {}
-    format = { ...format, ...makeFormatRegex(format) }
+    format = Object.assign({}, format, makeFormatRegex(format))
     myNumber._fdata[formatStr] = format
   })
 
